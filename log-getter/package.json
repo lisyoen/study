@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "build": "esbuild src/server.ts --bundle --outdir=dist --platform=node",
+    "build": "esbuild src/server.ts --bundle --outdir=dist --platform=node --sourcemap",
     "deploy": "npm run build && docker-compose down && docker rmi log-getter && docker-compose up -d",
-    "start": "node dist/server.js"
+    "start": "npm run build && node dist/server.js",
+    "debug": "npm run build && node --inspect dist/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +18,11 @@
     "pg": "^8.14.1"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.1",
+    "@types/pg": "^8.11.13",
     "esbuild": "^0.25.2"
   }
 }

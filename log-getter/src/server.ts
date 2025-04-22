@@ -1,16 +1,16 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors'; // 변경된 부분
 import { Pool, PoolClient, QueryResult } from 'pg';
 
 const app = express();
-const cors = require('cors');
 app.use(cors());
 app.use(bodyParser.json());
 
 // PostgreSQL 연결 설정
 const pool: Pool = new Pool({
   user: 'log-getter',
-  host: 'log-db',
+  host: 'localhost',
   database: 'log_db',
   password: 'test_password',
   port: 5432,
@@ -21,7 +21,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to the Log Getter API!');
 });
 
-// POST 요청 처리
+// POST 요청 처리 
 app.post('/data', async (req: Request, res: Response) => {
   const { sender, content }: { sender: string, content: string } = req.body;
 
