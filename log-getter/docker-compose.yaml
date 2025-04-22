@@ -1,0 +1,47 @@
+#version: '3'
+
+services:
+
+  log-getter:
+    container_name: log-getter
+    image: log-getter
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      POSTGRES_HOSTNAME: log-db
+      POSTGRES_DATABASE: log_db
+      POSTGRES_USER: log-getter
+      POSTGRES_PASSWORD: test_password  # 위와 동일한 비밀번호 사용
+    ports:
+      - 3000:3000
+    depends_on:
+      - log-db
+    networks:
+      - log-getter
+
+  log-db:
+    container_name: log-db
+    hostname: log-db
+    image: "postgres:15"
+    restart: always
+    environment:
+      POSTGRES_USER: log-getter
+      POSTGRES_PASSWORD: test_password  # 보안을 위해 변경 필요
+      POSTGRES_DB: log_db
+    ports:
+      - 5432:5432
+    volumes:
+      - log-data:/var/lib/postgresql/data
+    networks:
+      - log-getter
+
+networks:
+  log-getter:
+    driver: bridge
+    #name: host
+    #external: true
+
+volumes:
+  log-data:

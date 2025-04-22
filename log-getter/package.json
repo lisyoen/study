@@ -1,0 +1,21 @@
+{
+  "name": "log-getter",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "build": "esbuild src/server.js --bundle --outdir=dist --platform=node",
+    "start": "node dist/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "pg": "^8.14.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.2"
+  }
+}

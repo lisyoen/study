@@ -1,0 +1,6 @@
+CREATE TABLE log_table (
+  id SERIAL PRIMARY KEY,
+  event_time DATE DEFAULT CURRENT_TIMESTAMP,
+  sender VARCHAR(100) NOT NULL,
+  content TEXT NOT NULL
+);
