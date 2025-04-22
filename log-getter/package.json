@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "build": "esbuild src/server.js --bundle --outdir=dist --platform=node",
+    "build": "esbuild src/server.ts --bundle --outdir=dist --platform=node",
+    "deploy": "npm run build && docker-compose down && docker rmi log-getter && docker-compose up -d",
     "start": "node dist/server.js"
   },
   "author": "",
