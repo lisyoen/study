@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 // PostgreSQL 연결 설정
 const pool: Pool = new Pool({
   user: 'log-getter',
-  host: 'localhost',
+  host: process.env.POSTGRES_HOSTNAME ?? 'localhost',
   database: 'log_db',
   password: 'test_password',
   port: 5432,
