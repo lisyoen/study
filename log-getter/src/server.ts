@@ -23,13 +23,44 @@ app.get('/', (req: Request, res: Response) => {
 
 // POST 요청 처리 
 app.post('/data', async (req: Request, res: Response) => {
-  const { sender, content }: { sender: string, content: string } = req.body;
+  const data = req.body.data;
+  const email = req.query.email as string;
+  const userId = req.query.userid as string; // userid 쿼리 파라미터 추가
 
   try {
-    const result: QueryResult = await pool.query(
-      'INSERT INTO log_table (sender, content) VALUES ($1, $2) RETURNING *',
-      [sender, content]
-    );
+    const timestamp = data.timestamp ? new Date(data.timestamp).getTime() : null; // timestamp 변환
+    const maxPromptTokens = data.maxPromptTokens ? parseInt(data.maxPromptTokens, 10) : null; // 정수 변환
+    const debounceDelay = data.debounceDelay ? parseFloat(data.debounceDelay) : null; // 실수 변환
+    const maxSuffixPercentage = data.maxSuffixPercentage ? parseFloat(data.maxSuffixPercentage) : null; // 실수 변환
+    const prefixPercentage = data.prefixPercentage ? parseFloat(data.prefixPercentage) : null; // 실수 변환
+    const slidingWindowPrefixPercentage = data.slidingWindowPrefixPercentage ? parseFloat(data.slidingWindowPrefixPercentage) : null; // 실수 변환
+    const slidingWindowSize = data.slidingWindowSize ? parseInt(data.slidingWindowSize, 10) : null; // 정수 변환
+
+    const values = [
+      timestamp, userId ?? data.userId ?? null, data.userAgent ?? null, 
+      data.eventName ?? null, data.schema ?? null, maxPromptTokens, 
+      debounceDelay, maxSuffixPercentage, prefixPercentage, 
+      data.transform ?? null, data.multilineCompletions ?? null, slidingWindowPrefixPercentage, 
+      slidingWindowSize, data.prompt ?? null, data.completion ?? null, 
+      data.modelProvider ?? null, data.modelName ?? null, data.filepath ?? null, 
+      data.gitRepo ?? null, data.completionId ?? null
+    ];
+
+    // 입력할 필드를 콘솔에 출력
+    console.log('Inserting the following data into log_table:', values);
+
+    const query = `
+      INSERT INTO log_table (
+        timestamp, user_id, user_agent, event_name, schema_version, max_prompt_tokens, debounce_delay, 
+        max_suffix_percentage, prefix_percentage, transform, multiline_completions, 
+        sliding_window_prefix_percentage, sliding_window_size, prompt, completion, 
+        model_provider, model_name, filepath, git_repo, completion_id
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20
+      ) RETURNING *;
+    `;
+
+    const result: QueryResult = await pool.query(query, values);
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error(err);

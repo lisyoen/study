@@ -28,7 +28,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: log-getter
-      POSTGRES_PASSWORD: test_password  # 보안을 위해 변경 필요
+      POSTGRES_PASSWORD: test_password
       POSTGRES_DB: log_db
     ports:
       - 5432:5432
@@ -44,4 +44,4 @@ networks:
     #external: true
 
 volumes:
-  log-data:
+  log-data: # 기존 볼륨 정의

@@ -4,9 +4,13 @@
   "main": "server.js",
   "scripts": {
     "build": "esbuild src/server.ts --bundle --outdir=dist --platform=node --sourcemap",
+    "clean": "rimraf dist",
+    "rebuild": "npm run clean && npm run build",
     "deploy": "npm run build && docker-compose down && docker rmi log-getter && docker-compose up -d",
     "start": "npm run build && node dist/server.js",
-    "debug": "npm run build && node --inspect dist/server.js"
+    "debug": "npm run build && node --inspect dist/server.js",
+    "stop-log-getter": "docker-compose stop log-getter",
+    "start-log-getter": "docker-compose up -d log-getter"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +27,7 @@
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
     "@types/pg": "^8.11.13",
-    "esbuild": "^0.25.2"
+    "esbuild": "^0.25.3",
+    "rimraf": "^5.0.0"
   }
 }
