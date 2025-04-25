@@ -28,13 +28,21 @@ app.post('/data', async (req: Request, res: Response) => {
   const userId = req.query.userid as string; // userid 쿼리 파라미터 추가
 
   try {
-    const timestamp = data.timestamp ? new Date(data.timestamp).getTime() : null; // timestamp 변환
+    if (data.eventName !== 'autocomplete') {
+      console.log('Event name is not "autocomplete". Data not recorded.');
+      return ; // No Content 응답
+    }
+
+    const timestamp = data.timestamp ?? null; // 변환 없이 그대로 저장
     const maxPromptTokens = data.maxPromptTokens ? parseInt(data.maxPromptTokens, 10) : null; // 정수 변환
     const debounceDelay = data.debounceDelay ? parseFloat(data.debounceDelay) : null; // 실수 변환
     const maxSuffixPercentage = data.maxSuffixPercentage ? parseFloat(data.maxSuffixPercentage) : null; // 실수 변환
     const prefixPercentage = data.prefixPercentage ? parseFloat(data.prefixPercentage) : null; // 실수 변환
     const slidingWindowPrefixPercentage = data.slidingWindowPrefixPercentage ? parseFloat(data.slidingWindowPrefixPercentage) : null; // 실수 변환
     const slidingWindowSize = data.slidingWindowSize ? parseInt(data.slidingWindowSize, 10) : null; // 정수 변환
+    const numLines = data.numLines 
+      ? parseInt(data.numLines, 10) 
+      : (data.completion ? data.completion.split('\n').length : 0); // numLines 변환, 기본값: completion의 라인 수
 
     const values = [
       timestamp, userId ?? data.userId ?? null, data.userAgent ?? null, 
@@ -43,7 +51,7 @@ app.post('/data', async (req: Request, res: Response) => {
       data.transform ?? null, data.multilineCompletions ?? null, slidingWindowPrefixPercentage, 
       slidingWindowSize, data.prompt ?? null, data.completion ?? null, 
       data.modelProvider ?? null, data.modelName ?? null, data.filepath ?? null, 
-      data.gitRepo ?? null, data.completionId ?? null
+      data.gitRepo ?? null, data.completionId ?? null, numLines
     ];
 
     // 입력할 필드를 콘솔에 출력
@@ -54,9 +62,9 @@ app.post('/data', async (req: Request, res: Response) => {
         timestamp, user_id, user_agent, event_name, schema_version, max_prompt_tokens, debounce_delay, 
         max_suffix_percentage, prefix_percentage, transform, multiline_completions, 
         sliding_window_prefix_percentage, sliding_window_size, prompt, completion, 
-        model_provider, model_name, filepath, git_repo, completion_id
+        model_provider, model_name, filepath, git_repo, completion_id, num_lines
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21
       ) RETURNING *;
     `;
 

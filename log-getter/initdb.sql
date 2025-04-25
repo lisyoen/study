@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS log_table (
   model_name VARCHAR(100), -- JSON 데이터의 data.modelName 필드
   filepath TEXT, -- JSON 데이터의 data.filepath 필드
   git_repo VARCHAR(100), -- JSON 데이터의 data.gitRepo 필드
-  completion_id VARCHAR(100) -- JSON 데이터의 data.completionId 필드
+  completion_id VARCHAR(100), -- JSON 데이터의 data.completionId 필드
+  num_lines INT DEFAULT 0 -- JSON 데이터의 data.numLines 필드, 기본값 0
 );
 
 CREATE INDEX idx_log_id ON log_table (log_id);
