@@ -30,10 +30,9 @@ app.post('/data', async (req: Request, res: Response) => {
   try {
     if (data.eventName !== 'autocomplete') {
       console.log('Event name is not "autocomplete". Data not recorded.');
-      return ; // No Content 응답
+      return; // No Content 응답
     }
 
-    const timestamp = data.timestamp ?? null; // 변환 없이 그대로 저장
     const maxPromptTokens = data.maxPromptTokens ? parseInt(data.maxPromptTokens, 10) : null; // 정수 변환
     const debounceDelay = data.debounceDelay ? parseFloat(data.debounceDelay) : null; // 실수 변환
     const maxSuffixPercentage = data.maxSuffixPercentage ? parseFloat(data.maxSuffixPercentage) : null; // 실수 변환
@@ -45,7 +44,7 @@ app.post('/data', async (req: Request, res: Response) => {
       : (data.completion ? data.completion.split('\n').length : 0); // numLines 변환, 기본값: completion의 라인 수
 
     const values = [
-      timestamp, userId ?? data.userId ?? null, data.userAgent ?? null, 
+      userId ?? data.userId ?? null, data.userAgent ?? null, 
       data.eventName ?? null, data.schema ?? null, maxPromptTokens, 
       debounceDelay, maxSuffixPercentage, prefixPercentage, 
       data.transform ?? null, data.multilineCompletions ?? null, slidingWindowPrefixPercentage, 
@@ -64,7 +63,7 @@ app.post('/data', async (req: Request, res: Response) => {
         sliding_window_prefix_percentage, sliding_window_size, prompt, completion, 
         model_provider, model_name, filepath, git_repo, completion_id, num_lines
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21
+        DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20
       ) RETURNING *;
     `;
 

@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS log_table;
 
 CREATE TABLE IF NOT EXISTS log_table (
   log_id SERIAL PRIMARY KEY, -- 자동 증가되는 log_id 필드
-  timestamp BIGINT, -- JSON 데이터의 data.timestamp 필드
+  timestamp BIGINT DEFAULT (EXTRACT(EPOCH FROM CURRENT_TIMESTAMP) * 1000), -- 밀리초 단위로 저장
   user_id VARCHAR(100), -- JSON 데이터의 data.userId 필드
   user_agent TEXT, -- JSON 데이터의 data.userAgent 필드
   event_name VARCHAR(100), -- JSON 데이터의 data.eventName 필드
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS log_table (
   model_provider VARCHAR(100), -- JSON 데이터의 data.modelProvider 필드
   model_name VARCHAR(100), -- JSON 데이터의 data.modelName 필드
   filepath TEXT, -- JSON 데이터의 data.filepath 필드
-  git_repo VARCHAR(100), -- JSON 데이터의 data.gitRepo 필드
+  git_repo VARCHAR(100), -- JSON 데이터의 data.gitRepo 필드,
   completion_id VARCHAR(100), -- JSON 데이터의 data.completionId 필드
   num_lines INT DEFAULT 0 -- JSON 데이터의 data.numLines 필드, 기본값 0
 );
