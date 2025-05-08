@@ -10,18 +10,23 @@
     "start": "npm run build && node dist/server.js",
     "debug": "npm run build && node --inspect dist/server.js",
     "tree": "tree -I 'node_modules|data|cpython-3.12|public|uploads|logs|dist|dist-ssr|*.log|*.local|.vscode|.idea|.DS_Store|*.suo|*.ntvs*|*.njsproj|*.sln|*.sw?' --prune > tree.txt",
-    "gpt": "cp gpt.txt chat.txt && cat tree.txt >> chat.txt && echo \"\n\" >> chat.txt &&cat README.md >> chat.txt && echo package.json >> chat.txt && cat package.json >> chat.txt",
+    "gpt": "cp gpt.txt chat.txt && cat tree.txt >> chat.txt && echo \"\n\" >> chat.txt &&cat README.md >> chat.txt && echo package.json >> chat.txt && cat package.json >> chat.txt && echo initdb.sql >> chat.txt && cat initdb.sql >> chat.txt",
     "stop-log-getter": "docker-compose stop log-getter",
-    "start-log-getter": "docker-compose up -d log-getter"
+    "start-log-getter": "docker-compose up -d log-getter",
+    "start-all": "docker-compose up -d log-getter log-client",
+    "stop-all": "docker-compose stop log-getter log-client",
+    "restart-all": "npm run stop-all && npm run start-all"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "axios": "^1.9.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "pg": "^8.14.1"
+    "pg": "^8.14.1",
+    "recharts": "^2.15.3"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
