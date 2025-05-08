@@ -1,0 +1,18 @@
+.
+├── Dockerfile
+├── README.md
+├── autocomplete.json
+├── chat.txt
+├── docker-compose.yaml
+├── gpt.txt
+├── initdb.sql
+├── log-getter.code-workspace
+├── package-lock.json
+├── package.json
+├── src
+│   ├── server.ts
+│   └── test.ts
+├── tree.txt
+└── tsconfig.json
+
+2 directories, 14 files

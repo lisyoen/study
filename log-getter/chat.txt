@@ -1,3 +1,83 @@
+아래와 같이 Log 를 수집해 PostgreSQL DB 에 적재하는 시스템을 개발중이야.
+
+<< 요청사항 >>
+
+추가로 필요한 파일은 알려주면 전달할께.
+.
+├── Dockerfile
+├── README.md
+├── autocomplete.json
+├── chat.txt
+├── docker-compose.yaml
+├── gpt.txt
+├── initdb.sql
+├── log-getter.code-workspace
+├── package-lock.json
+├── package.json
+├── src
+│   ├── server.ts
+│   └── test.ts
+├── tree.txt
+└── tsconfig.json
+
+2 directories, 14 files
+
+
+* 초기화
+
+```bash
+$ npm install
+```
+
+* 빌드
+
+```bash
+$ npm run build
+```
+
+* 실행
+
+```bash
+$ npm run start
+```
+
+* 디버깅 실행
+
+```bash
+$ npm run debug
+```
+
+* 배포
+
+```bash
+$ npm run deploy
+```
+
+* DB 초기화
+
+윈도우의 경우
+```bash
+> type initdb.sql | docker exec -i log-db psql -U log-getter -d log_db
+```
+
+리눅스의 경우
+```bash
+$ cat initdb.sql | docker exec -i log-db psql -U log-getter -d log_db
+```
+
+* 재배포
+
+```bash
+$ npm run deploy
+```
+
+* 특정 컨테이너 중지 및 시작
+
+```bash
+$ npm run stop-log-getter
+$ npm run start-log-getter
+```
+package.json
 {
   "name": "log-getter",
   "version": "1.0.0",
